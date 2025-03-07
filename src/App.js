@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import './styles/App.css'
 import PostList from "./components/PostList";
-import MyButton from "./components/UI/button/MyButton";
-import MyInput from "./components/UI/input/MyInput";
+import PostForm from "./components/PostForm";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -11,14 +10,22 @@ function App() {
     {id: 3, title: "JavaScript 3", body: "Description"}
   ])
 
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost])
+  }
+
+  const removePost = (post) => {
+    setPosts(posts.filter(p => p.id !== post.id))
+  }
+
   return (
     <div className="App">
-      <form>
-        <MyInput type="text" placeholder="Post title" />
-        <MyInput type="text" placeholder="Post description" />
-        <MyButton>Create post</MyButton>
-      </form>
-      <PostList posts={posts} title="Posts about JS"/>
+      <PostForm create={createPost}/>
+      {posts.length !== 0 
+        ? <PostList posts={posts} title="Posts about JS" remove={removePost} /> 
+        : <h1 style={{textAlign: 'center'}}>No posts</h1>
+      }
+      
     </div>
   );
 }
